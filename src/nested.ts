@@ -220,13 +220,38 @@ export function changeQuestionTypeById(
  * Remember, if a function starts getting too complicated, think about how a helper function
  * can make it simpler! Break down complicated tasks into little pieces.
  */
+
+function editOptionList(
+    options: string[],
+    targetOptionIndex: number,
+    newOption: string,
+): string[] {
+    return targetOptionIndex === -1 ?
+            [...options, newOption]
+        :   options.map((option: string, index: number): string =>
+                index === targetOptionIndex ? newOption : option,
+            );
+}
+
 export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-    return [];
+    return questions.map(
+        (question: Question): Question =>
+            question.id === targetId ?
+                {
+                    ...question,
+                    options: editOptionList(
+                        question.options,
+                        targetOptionIndex,
+                        newOption,
+                    ),
+                }
+            :   question,
+    );
 }
 
 /***
